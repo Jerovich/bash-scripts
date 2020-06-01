@@ -1,19 +1,19 @@
 #!/bin/bash
 
-HOMEDIR="/home/jjl/"
-BACKUPDIR="/mnt/HOME_BACKUP/jjl/"
-MODULESDIR="/home/jjl/Modules/"
-USBDIR="/media/jjl/USB/Modules_USB/"
+HOMEDIR="/home/user/"
+BACKUPDIR="/mnt/Backup"
+SOURCEDIR="/home/user/dir"
+USBDIR="/mnt/USB"
 
-USB_PARAM="--delete --exclude={'.directory','sync.ffs_db'}"
-BAK_PARAM="--delete --exclude .cache  --exclude VMs  --exclude Scripts/tmp"
+USB_PARAM="--delete --exclude .directory"
+BAK_PARAM="--delete --exclude .cache  --exclude Scripts/tmp"
 
-TEMP_FILE="/home/jjl/Scripts/tmp/rsusb_deleting.txt"
+TEMP_FILE="/home/user/Scripts/tmp/rsusb_deleting.txt"
 
 clear
 
-if [ ! -d /home/jjl/Scripts/tmp/ ]; then
-  mkdir -p /home/jjl/Scripts/tmp/
+if [ ! -d /home/user/Scripts/tmp/ ]; then
+  mkdir -p /home/user/Scripts/tmp/
 fi
 
 echo; echo 'Please select one of these options:'; echo
@@ -28,16 +28,16 @@ while [ $i -lt 3 ]; do
   read -s -n 1 OPTION
   if [ $OPTION = 1 ]; then
     DEST_DIR="your HOME partition"
-    PROCEED="rsync -aivuh $USB_PARAM $USBDIR $MODULESDIR"
-    rsync -naivuh $USB_PARAM $USBDIR $MODULESDIR | grep '*deleting   ' > $TEMP_FILE
+    PROCEED="rsync -aivuh $USB_PARAM $USBDIR $SOURCEDIR"
+    rsync -naivuh $USB_PARAM $USBDIR $SOURCEDIR | grep '*deleting   ' > $TEMP_FILE
     break
   elif [ $OPTION = 2 ]; then
     DEST_DIR="your USB"
-    PROCEED="rsync -aivuh $USB_PARAM $MODULESDIR $USBDIR"
-    rsync -naivuh $USB_PARAM $MODULESDIR $USBDIR | grep '*deleting   ' > $TEMP_FILE
+    PROCEED="rsync -aivuh $USB_PARAM $SOURCEDIR $USBDIR"
+    rsync -naivuh $USB_PARAM $SOURCEDIR $USBDIR | grep '*deleting   ' > $TEMP_FILE
     break
   elif [ $OPTION = 3 ]; then
-    DEST_DIR="your HOME_BACKUP partition"
+    DEST_DIR="your BACKUP partition"
     PROCEED="sudo rsync -aivuh $BAK_PARAM $HOMEDIR $BACKUPDIR"
     sudo rsync -naivuh $BAK_PARAM $HOMEDIR $BACKUPDIR | grep '*deleting   ' > $TEMP_FILE
     break
